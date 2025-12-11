@@ -756,6 +756,13 @@ fn main() {
         }
     }
 
+    if cfg!(feature = "hip") {
+        config.define("GGML_HIP", "ON");
+        if let Ok(amdgpu_targets) = env::var("AMDGPU_TARGETS") {
+            config.define("AMDGPU_TARGETS", amdgpu_targets);
+        }
+    }
+
     // Android doesn't have OpenMP support AFAICT and openmp is a default feature. Do this here
     // rather than modifying the defaults in Cargo.toml just in case someone enables the OpenMP feature
     // and tries to build for Android anyway.
